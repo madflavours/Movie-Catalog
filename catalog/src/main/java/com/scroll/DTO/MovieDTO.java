@@ -1,33 +1,24 @@
 package com.scroll.DTO;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+public record MovieDTO(
+		String title, 
+		String writer,
+		String director,
+		String producer,
+		String music,
+		String language,
+		String year,
+		String picture_rating,
+		List<String> genre,
+		List<String> actors,
+		String budget,
+		String earnings,
+		String synopsis,
+		int duration,
+		double IMDB_rating,
+		String rottenTomatoes
+		)
 
-@Getter
-@Setter
-@Document(collection = "movies")
-public class MovieDTO {
-	
-	@Id
-	private String id;
-	private AcademyAward academyAward;
-	private String[] actors;
-	private String budget;
-	private String director;
-	private int duration;
-	private String[] genre;
-	private Long earnings;
-	private double imdb_rating;
-	private String language;
-	private String music;
-	private String picture_rating;
-	private String producer;
-	private String rotten_tomatoes_rating;
-	private String synopsis;
-	private String title;
-	private String writer;
-	private String year;
-}
+{}

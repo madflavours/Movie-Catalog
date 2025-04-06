@@ -1,4 +1,4 @@
-package com.scroll.DTO;
+package com.scroll.pojo;
 
 import lombok.Getter;
 import lombok.Setter;
