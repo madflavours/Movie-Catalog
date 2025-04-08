@@ -101,52 +101,14 @@ public class MovieController {
 		log.info("Controller - Search By Duration {}", duration);
 		return movieService.findByDuration(duration);
 	}
-	
+
 	@GetMapping("/find")
-	public List<MovieDTO> wildCardSearch(@RequestParam(required = false) String title, 
-			@RequestParam(required = false) String actor,
-			@RequestParam(required = false) String director, 
-			@RequestParam(required = false) String producer, 
-			@RequestParam(required = false) String music) {
+	public List<MovieDTO> wildCardSearch(@RequestParam(required = false) String title,
+			@RequestParam(required = false) String actor, @RequestParam(required = false) String director,
+			@RequestParam(required = false) String producer, @RequestParam(required = false) String music) {
 		log.info("Wild Card Search - Find By Any Matching String. Title: {} "
 				+ "Actor: {} Director: {} Producer: {} Music: {}", title, actor, director, producer, music);
 		return movieService.wildCardSearch(title, director, producer, music, actor);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

@@ -16,10 +16,24 @@ public interface MovieReactiveRepository extends ReactiveMongoRepository<Movie, 
 	public Mono<Movie> findByTitle(String title);
 
 	public Flux<Movie> findByProducer(String producer);
-	
+
 	public Flux<Movie> findByLanguage(String language);
-	
+
 	public Flux<Movie> findByGenreContaining(String genre);
-	
+
 	public Flux<Movie> findByYear(String year);
+
+	public Flux<Movie> findByMusic(String music);
+
+	public Flux<Movie> findByEarnings(String earnings);
+
+	public Flux<Movie> findByDurationLessThan(int duration);
+	
+	public Flux<Movie> findByRottenTomatoesGreaterThan(String rottenTomatoes);
+	
+	public Flux<Movie> findByImdbGreaterThan(double imdb);
+	
+	public Flux<Movie> findByRated(String rated);
+	
+	public Flux<Movie> findByActorsContaining(String actor);
 }

@@ -45,10 +45,7 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public List<MovieDTO> findAll() {
 		log.info("Finding all Movies");
-		return movieRepository.findAll()
-				.stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findAll().stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
@@ -67,9 +64,7 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	@Cacheable(value = "movies", key = "#director")
 	public List<MovieDTO> findByDirector(String director) {
-		return movieRepository.findByDirector(director).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByDirector(director).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
@@ -81,71 +76,56 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	@Cacheable(value = "movies", key = "#producer")
 	public List<MovieDTO> findByProducer(String producer) {
-		return movieRepository.findByProducer(producer).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByProducer(producer).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#language")
 	public List<MovieDTO> findByLanguage(String language) {
 		log.info("Cache Miss - DB Call");
-		return movieRepository.findByLanguage(language).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByLanguage(language).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#genre")
 	public List<MovieDTO> findByGenre(String genre) {
 		log.info("Starting search by genre: {}", genre);
-		return movieRepository.findByGenreContaining(genre).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByGenreContaining(genre).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#year")
 	public List<MovieDTO> findByYear(String year) {
 		log.info("Search By Year: {}", year);
-		return movieRepository.findByYear(year).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByYear(year).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#music")
 	public List<MovieDTO> findByMusic(String music) {
 		log.info("Service - Find By Music: {}", music);
-		return movieRepository.findByMusic(music).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByMusic(music).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#picture_rating")
 	public List<MovieDTO> findByMovieRating(String picture_rating) {
 		log.info("Service - Find By Movie Rating: {}", picture_rating);
-		return movieRepository.findByRated(picture_rating).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByRated(picture_rating).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#imdb")
 	public List<MovieDTO> findByImdbRatedOver(double imdb) {
 		log.info("Service - Find By IMDb Rating: {} And Above", imdb);
-		return movieRepository.findByImdbGreaterThan(imdb).stream()
-				.map(movieDTOMapper)
-				.collect(Collectors.toList());
+		return movieRepository.findByImdbGreaterThan(imdb).stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
 
 	@Override
 	@Cacheable(value = "movies", key = "#rotten_tomatoes_rating")
 	public List<MovieDTO> findByRottenTomatoesRatedOVer(String rotten_tomatoes_rating) {
 		log.info("Service - Find By Rotten Tomatoes Rating: {} And Above", rotten_tomatoes_rating);
-		return movieRepository.findByRottenTomatoesGreaterThan(rotten_tomatoes_rating).stream()
-				.map(movieDTOMapper)
+		return movieRepository.findByRottenTomatoesGreaterThan(rotten_tomatoes_rating).stream().map(movieDTOMapper)
 				.collect(Collectors.toList());
 	}
 
@@ -153,8 +133,7 @@ public class MovieServiceImpl implements MovieService {
 	@Cacheable(value = "movies", key = "#duration")
 	public List<MovieDTO> findByDuration(int duration) {
 		log.info("Service - Find Shorter Movies By Duration: {} And Below", duration);
-		return movieRepository.findByDurationLessThan(duration).stream()
-				.map(movieDTOMapper)
+		return movieRepository.findByDurationLessThan(duration).stream().map(movieDTOMapper)
 				.collect(Collectors.toList());
 	}
 
@@ -180,44 +159,15 @@ public class MovieServiceImpl implements MovieService {
 			log.info("Wild Card Search: Look up by Music: {}", music);
 			totalMovieList.addAll(movieRepository.findByMusic(music));
 		}
-		
-		if(StringUtils.isNotBlank(actor)) {
+
+		if (StringUtils.isNotBlank(actor)) {
 			log.info("Wild Card Search: Look up by Actor: {}", actor);
 			totalMovieList.addAll(movieRepository.findByActorsContaining(actor));
 		}
 
 		return totalMovieList.stream()
-				.collect(Collectors.toMap(Movie::getId, movie -> movie, (existing, replacement) -> existing))
-				.values().stream()
-				.map(movieDTOMapper).collect(Collectors.toList());
+				.collect(Collectors.toMap(Movie::getId, movie -> movie, (existing, replacement) -> existing)).values()
+				.stream().map(movieDTOMapper).collect(Collectors.toList());
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
