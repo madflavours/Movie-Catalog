@@ -3,11 +3,16 @@ package com.scroll.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scroll.DTO.MovieDTO;
+import com.scroll.pojo.Movie;
 import com.scroll.service.reactive.ReactiveMovieService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -111,5 +116,17 @@ public class ReactiveMovieController {
 		log.info("Wild Card Search - Find By Any Matching String. Title: {} "
 				+ "Actor: {} Director: {} Producer: {} Music: {}", title, actor, director, producer, music);
 		return reactiveMovieService.wildCardSearch(title, director, producer, music, actor);
+	}
+	
+	@PutMapping("/{id}")
+	public Mono<MovieDTO> updateMovie(@PathVariable String id, @RequestBody Movie movie) {
+		log.info("Put Update - Update the Movie For ID: {}", id);
+		return reactiveMovieService.update(id, movie);
+	}
+	
+	@PostMapping("/add")
+	public Mono<MovieDTO> add(@RequestBody Movie movie) {
+		log.info("Start Insertion Of New Movie With Title {}", movie.getTitle());
+		return reactiveMovieService.add(movie);
 	}
 }

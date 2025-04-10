@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.scroll.DTO.MovieDTO;
 import com.scroll.mapper.MovieDTOMapper;
+import com.scroll.mapper.MovieUpdateMapper;
 import com.scroll.pojo.Movie;
 import com.scroll.repository.MovieRepository;
 import com.scroll.repository.reactive.MovieReactiveRepository;
@@ -25,14 +26,17 @@ public class MovieServiceImpl implements MovieService {
 	private final MovieRepository movieRepository;
 	private final MovieDTOMapper movieDTOMapper;
 
+	private final MovieUpdateMapper movieUpdateMapper;
+
 	@Autowired
 	private final MovieReactiveRepository reactiveRepository;
 
 	public MovieServiceImpl(MovieRepository movieRepository, MovieDTOMapper movieDTOMapper,
-			MovieReactiveRepository reactiveRepository) {
+			MovieUpdateMapper movieUpdateMapper, MovieReactiveRepository reactiveRepository) {
 		super();
 		this.movieRepository = movieRepository;
 		this.movieDTOMapper = movieDTOMapper;
+		this.movieUpdateMapper = movieUpdateMapper;
 		this.reactiveRepository = reactiveRepository;
 	}
 
@@ -168,6 +172,32 @@ public class MovieServiceImpl implements MovieService {
 		return totalMovieList.stream()
 				.collect(Collectors.toMap(Movie::getId, movie -> movie, (existing, replacement) -> existing)).values()
 				.stream().map(movieDTOMapper).collect(Collectors.toList());
+	}
+
+	@Override
+	public MovieDTO update(String id, Movie movie) {
+
+		Optional<Movie> result = movieRepository.findById(id);
+		if (result.isPresent()) {
+			Movie updateMovie = movieUpdateMapper.mapChangesFields(result.get(), movie);
+			movieRepository.save(updateMovie);
+			return movieDTOMapper.apply(updateMovie);
+		}
+		return null;
+
+	}
+
+	@Override
+	public MovieDTO add(Movie movie) {
+		log.info("Initiating Service Work to Insert Movie {}", movie.getTitle());
+
+		try {
+			movieRepository.save(movie);
+		} catch (Exception e) {
+			log.error("Problem Storing New Movie {}: {}", movie.getTitle(), e.getLocalizedMessage());
+		}
+		movieRepository.save(movie);
+		return movieDTOMapper.apply(movie);
 	}
 
 }

@@ -40,5 +40,9 @@ public interface MovieService {
 	public List<MovieDTO> findByDuration(int duration);
 	
 	public List<MovieDTO> wildCardSearch(String title, String director, String producer, String music, String actor);
+	
+	public MovieDTO update(String id, Movie movie);
+	
+	public MovieDTO add(Movie movie);
 
 }

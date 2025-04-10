@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.scroll.DTO.MovieDTO;
 import com.scroll.mapper.MovieDTOMapper;
+import com.scroll.mapper.MovieUpdateMapper;
 import com.scroll.pojo.Movie;
 import com.scroll.repository.reactive.MovieReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,11 +21,14 @@ public class ReactiveMovieServiceImpl implements ReactiveMovieService {
 
 	private final MovieReactiveRepository movieReactiveRepository;
 	private final MovieDTOMapper movieDTOMapper;
+	private final MovieUpdateMapper movieUpdateMapper;
 
-	public ReactiveMovieServiceImpl(MovieReactiveRepository movieReactiveRepository, MovieDTOMapper movieDTOMapper) {
+	public ReactiveMovieServiceImpl(MovieReactiveRepository movieReactiveRepository, MovieDTOMapper movieDTOMapper,
+			MovieUpdateMapper movieUpdateMapper) {
 		super();
 		this.movieReactiveRepository = movieReactiveRepository;
 		this.movieDTOMapper = movieDTOMapper;
+		this.movieUpdateMapper = movieUpdateMapper;
 	}
 
 	public Mono<MovieDTO> findById(String id) {
@@ -158,5 +162,35 @@ public class ReactiveMovieServiceImpl implements ReactiveMovieService {
 				.stream().map(movieDTOMapper).collect(Collectors.toList());
 
 		return Flux.fromIterable(filteredList);
+	}
+
+	@Override
+	public Mono<MovieDTO> update(String id, Movie movie) {
+		log.info("Initiate Update For Existing Movie {}", id);
+		movieReactiveRepository.findById(id)
+		.doOnSuccess(dbSource -> {
+			if (dbSource != null) {
+				log.info("Found Movie From DB: {}", dbSource.getId());
+				Movie updatedMovie = movieUpdateMapper.mapChangesFields(dbSource, movie);
+				movieReactiveRepository.save(updatedMovie)
+				.doOnSuccess(savedMovie -> {
+					log.info("Successfully Updated Movie: {}", updatedMovie.getId());
+				})
+				.doOnError(error -> log.error("Error: {}", error))
+				.subscribe();
+			}
+		})
+		.doOnError(error -> log.info("Error: {]", error))
+		.subscribe();
+
+		return Mono.empty();
+
+	}
+
+	@Override
+	public Mono<MovieDTO> add(Movie movie) {
+		log.info("Adding New Movie Record With Title {}", movie.getTitle());
+		movieReactiveRepository.save(movie);
+		return Mono.just(movieDTOMapper.apply(movie));
 	}
 }

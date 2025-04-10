@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import com.scroll.DTO.MovieDTO;
+import com.scroll.pojo.Movie;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,4 +43,8 @@ public interface ReactiveMovieService {
 	public Flux<MovieDTO> findByDuration(int duration);
 
 	public Flux<MovieDTO> wildCardSearch(String title, String director, String producer, String music, String actor);
+	
+	public Mono<MovieDTO> update(String id, Movie movie);
+	
+	public Mono<MovieDTO> add(Movie movie);
 }
