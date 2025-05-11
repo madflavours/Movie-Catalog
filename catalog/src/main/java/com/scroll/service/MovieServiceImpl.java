@@ -44,6 +44,7 @@ public class MovieServiceImpl implements MovieService {
 		this.movieUpdateMapper = movieUpdateMapper;
 	}
 
+	@Cacheable(value = "movies", key = "#id")
 	public Movie findById(String id) {
 		Optional<Movie> result = movieRepository.findById(id);
 		return result.orElseThrow();
@@ -56,13 +57,13 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	@Cacheable(value = "movies", key = "#id")
 	public List<String> findActorsForMovie(String id) {
 		Movie movie = this.findById(id);
 		return movie.getActors();
 	}
 
 	@Override
+	@Cacheable(value = "movies", key = "#director")
 	public PagedModel<MovieDTO> findByActor(String actor, Pageable pageable) {
 		Page<Movie> pageContent = movieRepository.findByActorsContaining(actor, pageable);
 		List<MovieDTO> resultList = pageContent.getContent().stream().map(movieDTOMapper).collect(Collectors.toList());

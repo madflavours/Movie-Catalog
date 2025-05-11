@@ -21,9 +21,9 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
 	private String VALID_API_KEY;
 
-	public ApiKeyFilter(@Value("${api.key}") String vALID_API_KEY) {
+	public ApiKeyFilter(@Value("${api.key}") String VALID_API_KEY) {
 		super();
-		VALID_API_KEY = vALID_API_KEY;
+		this.VALID_API_KEY = VALID_API_KEY;
 	}
 
 	@Override

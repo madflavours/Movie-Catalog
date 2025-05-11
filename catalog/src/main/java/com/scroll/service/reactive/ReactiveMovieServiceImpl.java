@@ -30,7 +30,8 @@ public class ReactiveMovieServiceImpl implements ReactiveMovieService {
 		this.movieDTOMapper = movieDTOMapper;
 		this.movieUpdateMapper = movieUpdateMapper;
 	}
-
+	
+	@Cacheable(value = "movies", key = "#id")
 	public Mono<MovieDTO> findById(String id) {
 		log.info("Reactive Result: {}", movieReactiveRepository.count().block());
 		return movieReactiveRepository.findById(id).map(movieDTOMapper);

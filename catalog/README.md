@@ -22,6 +22,7 @@ A simple Spring Boot-based REST API for managing a collection of movies. This AP
 - Spring Cache
 - Resilience4j
 - Apache Kafka
+- OpenAPI (for Swagger)
 
 ---
 
