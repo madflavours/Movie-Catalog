@@ -63,9 +63,10 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<MovieDTO> findByActor(String actor, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public PagedModel<MovieDTO> findByActor(String actor, Pageable pageable) {
+		Page<Movie> pageContent = movieRepository.findByActorsContaining(actor, pageable);
+		List<MovieDTO> resultList = pageContent.getContent().stream().map(movieDTOMapper).collect(Collectors.toList());
+		return PagedModel.of(resultList, new PagedModel.PageMetadata(pageContent.getSize(), pageContent.getNumber(), pageContent.getTotalElements()));
 	}
 
 	@Override

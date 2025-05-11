@@ -52,6 +52,14 @@ public class MovieController {
 		log.info("Controller - Search By producer {}", producer);
 		return movieService.findByProducer(producer, getPaginationSetting.apply(page, size));
 	}
+	
+	@GetMapping("/actor")
+	public PagedModel<MovieDTO> findByActor(@RequestParam String actor,
+			@RequestParam(required = false) int page,
+			@RequestParam(required = false) int size) {
+		log.info("Controller - Search By Actor {}", actor);
+		return movieService.findByActor(actor, getPaginationSetting.apply(page, size));
+	}
 
 	@GetMapping("/language")
 	public PagedModel<MovieDTO> findByLanguage(@RequestParam String language,

@@ -17,7 +17,7 @@ public interface MovieService {
 
 	public List<String> findActorsForMovie(String id);
 
-	public List<MovieDTO> findByActor(String actor, Pageable pageable);
+	public PagedModel<MovieDTO> findByActor(String actor, Pageable pageable);
 
 	public PagedModel<MovieDTO> findByDirector(String director, Pageable pageable);
 
